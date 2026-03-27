@@ -61,6 +61,7 @@ public class UserService {
 		try {
 
 			User user = userMapper.selectUser(map);
+		
 			if (user != null) {
 				resultMap.put("message", "이미 사용중인 아이디 입니다");
 				resultMap.put("result", false);

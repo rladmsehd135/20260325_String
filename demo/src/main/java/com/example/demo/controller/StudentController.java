@@ -25,6 +25,11 @@ public class StudentController {
 		return "/student/stu-list";
 	}
 	
+	@RequestMapping("/stu-add.do")
+	public String add(Model model) throws Exception{
+		return "/student/stu-add";
+	}
+	
 	@RequestMapping(value = "/stu-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String test(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -32,7 +37,7 @@ public class StudentController {
 
 //		DefaultService obj = new DefaultService();
 
-		resultMap = studentService.getStuList();
+		resultMap = studentService.getStuList(map);
 //				
 		return new Gson().toJson(resultMap);
 	}
@@ -47,5 +52,28 @@ public class StudentController {
 //				
 		return new Gson().toJson(resultMap);
 	}
+	@RequestMapping(value = "/checkStu.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String check(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+//		DefaultService obj = new DefaultService();
+
+		resultMap = studentService.getStudent(map);
+//				
+		return new Gson().toJson(resultMap);
+	}
+	@RequestMapping(value = "/stu-add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String stuadd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+//		DefaultService obj = new DefaultService();
+
+		resultMap = studentService.addStudent(map);
+//				
+		return new Gson().toJson(resultMap);
+	}
+	
 
 }

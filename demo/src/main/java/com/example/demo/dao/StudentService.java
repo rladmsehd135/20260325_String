@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.mapper.StudentMapper;
 import com.example.demo.model.Stu;
+import com.example.demo.model.User;
 
 @Service
 public class StudentService {
 	@Autowired
 	StudentMapper studentMapper;
 	
-	public HashMap<String,Object> getStuList(){
+	public HashMap<String,Object> getStuList(HashMap<String, Object> map){
 		HashMap<String,Object> resultMap = new HashMap<String,Object>();	
-		List<Stu> list = studentMapper.selectStuList();
+		List<Stu> list = studentMapper.selectStuList(map);
 		resultMap.put("list",list);
 		resultMap.put("message", "데이터 조회 성공");
 		resultMap.put("result", "success");
@@ -38,6 +39,41 @@ public class StudentService {
 		
 		return resultMap;
 	}
+	public HashMap<String, Object> getStudent(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+
+			Stu stu = studentMapper.selectStuNo(map);
+			if (stu != null) {
+				resultMap.put("message", "이미 사용중인 학번 입니다");
+				resultMap.put("result", "fail");
+			} else {
+				resultMap.put("message", "사용 가능한 학번 입니다.");
+				resultMap.put("result", "success");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("result", "서버 에러.");
+		}
+		return resultMap;
+	}
+	public HashMap<String,Object> addStudent(HashMap<String,Object> map){
+		HashMap<String,Object> resultMap = new HashMap<String,Object>();	
+		
+		try {
+			int cnt = studentMapper.insertStu(map);
+			resultMap.put("message", "학생추가 성공");
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("message", "서버 에러 발생! \n잠시 후 다시 시도해주세요");
+			resultMap.put("result", "fail");
+		}
+		return resultMap;
+	}
+
 	
 	
 }

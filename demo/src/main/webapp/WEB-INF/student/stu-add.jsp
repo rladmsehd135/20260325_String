@@ -26,19 +26,32 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <div>
-            <label >아이디<input v-model="userId"></label>
+        <div>
+            <label >학번<input v-model="info.stuNo">></label>
             <button @click="fnCheck">중복체크</button>
-         </div>
-         <div>
-            <label >비밀번호<input v-model="pwd" type="password"></label>
-         </div>
-           <div>
-            <label >이름<input v-model="userName"></label>
-         </div>
-         <div>
-            <button @click="fnJoin">가입</button>
-         </div>
+        </div>
+        <div>
+            <label>이름<input v-model="info.stuName"></label>
+        </div>
+        <div>
+            <label>학과<input v-model="info.stuDept"></label>
+        </div>
+        <div>
+            학년 :
+            <select v-model="info.stuGrade">
+                <option value="1">1학년</option>
+                <option value="2">2학년</option>
+                <option value="3">3학년</option>
+            </select>
+        </div>
+        <div>
+            성별 :
+            <label><input type="radio" name="Gender" value="M" v-model="info.stuGender">남자</label>
+            <label><input type="radio" name="Gender" value="F" v-model="info.stuGender">여자</label>
+        </div>
+        <div>
+            <button @click="fnAdd">추가!</button>
+        </div>
     </div>
 </body>
 </html>
@@ -48,40 +61,50 @@
         data() {
             return {
                 // 변수 - (key : value)
-                userId : "",
-                pwd : "",
-                userName : "" 
+                info : {
+                    stuNo : "",
+                    stuName : "",
+                    stuDept : "",
+                    stuGrade : "1",
+                    stuGender : "F"
+                }
+               
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnJoin: function () {
+            fnCheck: function () {
                 let self = this;
                 let param = {
-                    userId : self.userId
+                    stuNo : self.info.stuNo
                 };
                 $.ajax({
-                    url: "http://localhost:8080/join.dox",
+                    url: "http://localhost:8080/checkStu.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
                         alert(data.message);
+                        if(result == 'success'){}
                     }
                 });
             },
-             fnCheck: function () {
+              fnAdd: function () {
                 let self = this;
-                let param = {
-                    userId : self.userId
-                };
+                if(self.info.stuNo.length !=8){
+                    alert("학번은 8글자!");
+                    return;
+                }
+                let param = self.info;
+               
                 $.ajax({
-                    url: "http://localhost:8080/check.dox",
+                    url: "http://localhost:8080/stu-add.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
                         alert(data.message);
+                        if(result == 'success'){}
                     }
                 });
             }

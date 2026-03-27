@@ -8,6 +8,7 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/page-change.js"></script>
     <style>
         table, tr, td, th{
             border : 1px solid black;
@@ -27,17 +28,16 @@
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
          <div>
-            <label >아이디<input v-model="userId"></label>
-            <button @click="fnCheck">중복체크</button>
+            제목 : {{info.title}}
          </div>
          <div>
-            <label >비밀번호<input v-model="pwd" type="password"></label>
-         </div>
-           <div>
-            <label >이름<input v-model="userName"></label>
+            조회수 : {{info.cnt}}
          </div>
          <div>
-            <button @click="fnJoin">가입</button>
+            내용 : {{info.contents}}
+         </div>
+         <div>
+            <button @click="fnEdit">수정</button>
          </div>
     </div>
 </body>
@@ -48,47 +48,36 @@
         data() {
             return {
                 // 변수 - (key : value)
-                userId : "",
-                pwd : "",
-                userName : "" 
+                boardNo : "${boardNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnJoin: function () {
+            fnGetBoard: function () {
                 let self = this;
                 let param = {
-                    userId : self.userId
+                    boardNo : self.boardNo,
+                    kind : "view"
                 };
                 $.ajax({
-                    url: "http://localhost:8080/join.dox",
+                    url: "http://localhost:8080/board/info.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        alert(data.message);
+                        self.info = data.info;
                     }
                 });
             },
-             fnCheck: function () {
-                let self = this;
-                let param = {
-                    userId : self.userId
-                };
-                $.ajax({
-                    url: "http://localhost:8080/check.dox",
-                    dataType: "json",
-                    type: "POST",
-                    data: param,
-                    success: function (data) {
-                        alert(data.message);
-                    }
-                });
-            }
+        fnEdit : function(){
+            pageChange("/board/edit.do" ,{boardNo : this.boardNo})
+        }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnGetBoard();
         }
     });
 
