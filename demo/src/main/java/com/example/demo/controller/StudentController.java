@@ -37,7 +37,7 @@ public class StudentController {
 
 //		DefaultService obj = new DefaultService();
 
-		resultMap = studentService.getStuList(map);
+		resultMap = studentService.getStudentList(map);
 //				
 		return new Gson().toJson(resultMap);
 	}

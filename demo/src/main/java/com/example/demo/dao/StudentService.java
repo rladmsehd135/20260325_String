@@ -7,17 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.mapper.StudentMapper;
-import com.example.demo.model.Stu;
-import com.example.demo.model.User;
+import com.example.demo.model.Student;
 
 @Service
 public class StudentService {
 	@Autowired
 	StudentMapper studentMapper;
 	
-	public HashMap<String,Object> getStuList(HashMap<String, Object> map){
+	public HashMap<String,Object> getStudentList(HashMap<String, Object> map){
 		HashMap<String,Object> resultMap = new HashMap<String,Object>();	
-		List<Stu> list = studentMapper.selectStuList(map);
+		List<Student> list = studentMapper.selectStudentList(map);
 		resultMap.put("list",list);
 		resultMap.put("message", "데이터 조회 성공");
 		resultMap.put("result", "success");
@@ -43,7 +42,7 @@ public class StudentService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 
-			Stu stu = studentMapper.selectStuNo(map);
+			Student stu = studentMapper.selectStuNo(map);
 			if (stu != null) {
 				resultMap.put("message", "이미 사용중인 학번 입니다");
 				resultMap.put("result", "fail");
@@ -62,7 +61,7 @@ public class StudentService {
 		HashMap<String,Object> resultMap = new HashMap<String,Object>();	
 		
 		try {
-			int cnt = studentMapper.insertStu(map);
+			int cnt = studentMapper.insertStudent(map);
 			resultMap.put("message", "학생추가 성공");
 			resultMap.put("result", "success");
 		} catch (Exception e) {

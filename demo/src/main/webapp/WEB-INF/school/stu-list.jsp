@@ -26,36 +26,45 @@
 </head>
 <body>
     <div id="app">
-        <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-        <div>
-          <div>
-              검색어 : <input v-model="keyword">
-              <button @click="fnGetList">검색</button>
-          </div>
-          <table>
-                    <tr>
-                        <th>번호</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>내용</th>
-                        <th>조회수</th>
-                        <th>작성일</th>
-                        
-                    </tr>
-                     <tr v-for="item in list">
-                        <td>{{item.boardNo}}</td>
-                        <td>{{item.userId}}</td>
-                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a></td>
-                        <td>{{item.contents}}</td>
-                        <td>{{item.cnt}}</td>
-                        <td>{{item.cDateTime}}</td>
+        <div id = "container">
+            <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+            <div class = "search-area">
+                <label>학년 :
+                  <select v-model="grade" @change="fnGetList">
+                    <option value="">:: 전체 ::</option> 
+                    <option value="1">1학년</option>  
+                    <option value="2">2학년</option>  
+                    <option value="3">3학년</option>  
+                    <option value="4">4학년</option>  
+                    
+                  </select>
+                </label>
+            </div>
 
+            <div class="table-area">
+                <table>
+                    <tr>
+                        <th>학번</th>
+                        <th>이름</th>
+                        <th>학년</th>
+                        <th>학부</th>
+                        <th>학과</th>
+                        <th>부전공</th>
+                        <th>담당교수</th>
                     </tr>
-        </table>
-     </div>  
-         <div>
-            <a href="/board/add.do"><button>글쓰기</button></a>
-        </div> 
+                    <tr v-for="item in list">
+                                <td>{{item.stuNo}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.grade}}</td>
+                                <td>{{item.dName2}}</td> 
+                                <td>{{item.dName3}}</td>
+                                <td>{{item.dName4}}</td>
+                                <td>{{item.profName}}</td>
+                            </tr>
+
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 </html>
@@ -66,7 +75,7 @@
             return {
                 // 변수 - (key : value)
                 list : [],
-                keyword : ""
+                grade : ""
             };
         },
         methods: {
@@ -77,7 +86,7 @@
                     grade : self.grade
                 };
                 $.ajax({
-                    url: "http://localhost:8080/board/list.dox",
+                    url: "http://localhost:8080/stu/list.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
@@ -86,10 +95,6 @@
                         self.list = data.list;
                     }
                 });
-            },
-            fnView :function(boardNo){
-                // alert(boardNo);
-                pageChange("/board/view.do" ,{boardNo : boardNo})
             }
         }, // methods
         mounted() {

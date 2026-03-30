@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.example.demo.mapper.StudentMapper">
-	<select id="selectStuList" parameterType="hashmap" resultType="com.example.demo.model.Stu">
+	<select id="selectStuList" parameterType="hashmap" resultType="com.example.demo.model.Student">
 		SELECT *
 		FROM STUDENT
 		WHERE (STU_NO LIKE CONCAT('%', #{keyword}, '%') OR STU_NAME LIKE CONCAT('%', #{keyword}, '%'))
@@ -17,7 +17,7 @@
 		DELETE FROM STUDENT WHERE STU_NO = #{stuNo} 
 	</delete>
 	
-	<select id="selectStuNo" parameterType="hashmap" resultType="com.example.demo.model.Stu">
+	<select id="selectStuNo" parameterType="hashmap" resultType="com.example.demo.model.Student">
 		SELECT *
 		FROM STUDENT
 		WHERE STU_NO = #{stuNo}

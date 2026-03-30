@@ -27,35 +27,25 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-        <div>
-          <div>
-              검색어 : <input v-model="keyword">
-              <button @click="fnGetList">검색</button>
-          </div>
-          <table>
-                    <tr>
-                        <th>번호</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>내용</th>
-                        <th>조회수</th>
-                        <th>작성일</th>
-                        
+         <table>
+              <tr>
+                <th>교수번호</th>
+                <th>이름</th>
+                <th>포지션</th>
+                <th>급여</th>
+                <th>학부</th>
+                <th>학과</th>
+            </tr>
+            <tr v-for="item in list">
+                        <td>{{item.profNo}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.position}}</td>
+                        <td>{{item.pay}}</td>
+                        <td>{{item.dName2}}</td>
+                        <td>{{item.dName3}}</td> 
                     </tr>
-                     <tr v-for="item in list">
-                        <td>{{item.boardNo}}</td>
-                        <td>{{item.userId}}</td>
-                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a></td>
-                        <td>{{item.contents}}</td>
-                        <td>{{item.cnt}}</td>
-                        <td>{{item.cDateTime}}</td>
 
-                    </tr>
-        </table>
-     </div>  
-         <div>
-            <a href="/board/add.do"><button>글쓰기</button></a>
-        </div> 
+         </table>
     </div>
 </body>
 </html>
@@ -65,19 +55,16 @@
         data() {
             return {
                 // 변수 - (key : value)
-                list : [],
-                keyword : ""
+                list : []
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
             fnGetList: function () {
                 let self = this;
-                let param = {
-                    grade : self.grade
-                };
+                let param = {};
                 $.ajax({
-                    url: "http://localhost:8080/board/list.dox",
+                    url: "http://localhost:8080/prof/list.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
@@ -86,10 +73,6 @@
                         self.list = data.list;
                     }
                 });
-            },
-            fnView :function(boardNo){
-                // alert(boardNo);
-                pageChange("/board/view.do" ,{boardNo : boardNo})
             }
         }, // methods
         mounted() {

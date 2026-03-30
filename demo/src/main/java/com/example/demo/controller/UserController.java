@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.dao.UserService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class UserController {
  
@@ -26,6 +28,10 @@ public class UserController {
 	@RequestMapping("/join.do")
 	public String join(Model model) throws Exception{
 		return "/user/sign-up";
+	}
+	@RequestMapping("/addr.do")
+	public String addr(Model model) throws Exception{
+		return "/user/jusoPopup";
 	}
 	
 	@RequestMapping(value = "/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -61,4 +67,32 @@ public class UserController {
 //				
 		return new Gson().toJson(resultMap);
 	}
+	
+	
+	//===복습(User 테이블)===
+	@RequestMapping("/user/list.do") 
+	public String copy(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		return "/user/user-list";
+	}
+	
+	@RequestMapping(value = "/user/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String userlist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userService.getUserList(map);
+
+		return new Gson().toJson(resultMap); 
+	}
+	@RequestMapping(value = "/user-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String removeUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+//		DefaultService obj = new DefaultService();
+
+		resultMap = userService.removeUser(map);
+//				
+		return new Gson().toJson(resultMap);
+	}
+
 }
