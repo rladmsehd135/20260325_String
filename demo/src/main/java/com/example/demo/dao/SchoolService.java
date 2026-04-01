@@ -198,6 +198,36 @@ public class SchoolService {
 		}
 		return resultMap;
 	}
+	public HashMap<String, Object> editStu(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int result = schoolMapper.updateStu(map);
+			
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_EDIT);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
+			resultMap.put("message", Message.MSG_SERVER_ERR);
+		}
+		return resultMap;
+	}
+	public HashMap<String, Object> editProF(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int result = schoolMapper.updateProf(map);
+			
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_EDIT);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
+			resultMap.put("message", Message.MSG_SERVER_ERR);
+		}
+		return resultMap;
+	}
 	
 	
 	

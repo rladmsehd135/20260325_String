@@ -39,7 +39,9 @@
          <div>
             급여 : {{info.pay}}
          </div>
+         <button @click="fnEdit">수정</button>
     </div>
+    
 </body>
 </html>
 
@@ -69,6 +71,9 @@
                         self.info = data.info
                     }
                 });
+            },
+            fnEdit : function(){
+                pageChange("/prof/edit.do", {profNo : this.profNo})
             }
         }, // methods
         mounted() {

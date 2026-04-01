@@ -25,6 +25,7 @@
 	<insert id = "insertStu" parameterType="hashmap" >
 			INSERT INTO STUDENT
 			VALUES(#{stuNo},#{stuName},#{stuDept},#{stuGrade},NULL,#{stuGender},NULL,NULL)
-		</insert>
+	</insert>
+	
 	
 </mapper>

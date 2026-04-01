@@ -20,6 +20,17 @@
 			INSERT INTO	TBL_USER(USERID,USERNAME,PWD) 
 			VALUES(#{userId},#{username},#{pwd})
 		</insert>
+		<insert id="insertUserFile" parameterType="hashmap" > 
+		INSERT INTO TBL_USER_FILE
+		VALUES(#{userId}, #{idx}, #{path}, #{filename}, #{orgName}, #{size}, #{ext})
+	
+		</insert>
+		<select id="selectUserFile" parameterType="hashmap" resultType="com.example.demo.model.User">
+		SELECT *
+		FROM TBL_USER_FILE
+		WHERE USERID = #{userId}
+		</select>
+		
 		
 		<delete id ="deleteUser" parameterType="hashmap">
 			DELETE FROM TBL_USER WHERE USERID = #{userId} 

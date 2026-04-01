@@ -37,6 +37,12 @@ public interface SchoolMapper {
 	
 	//교수정보
 	public Professor selectProf(HashMap<String, Object> map);
+	
+	//학생 수정
+	public int updateStu(HashMap<String, Object> map);
+	
+	//교수 수정
+	public int updateProf(HashMap<String, Object> map);
 }
 
 

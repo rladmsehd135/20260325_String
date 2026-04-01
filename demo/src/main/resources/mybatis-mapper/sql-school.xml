@@ -92,6 +92,25 @@
 		DELETE FROM PROFESSOR
 		WHERE PROFNO = #{profNo}
 	</delete>
+	<update id="updateStu" parameterType="hashmap">
+		UPDATE STU
+		SET
+			NAME = #{stuName},
+			GRADE = #{grade},
+			DEPTNO1 = #{deptNo1},
+			PROFNO = #{profNo}
+		WHERE STUNO =#{stuNo}
+	</update>
+	
+	<update id="updateProf" parameterType="hashmap">
+		UPDATE PROFESSOR
+		SET
+			NAME = #{name},
+			POSITION = #{position},
+			DEPTNO = #{deptNo},
+			PAY = #{pay}
+		WHERE PROFNO =#{profNo}
+	</update>
 </mapper>
 
 

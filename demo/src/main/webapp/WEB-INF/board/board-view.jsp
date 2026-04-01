@@ -33,9 +33,16 @@
          <div>
             조회수 : {{info.cnt}}
          </div>
-         <div>
+         <div v-for="item in fileList">
+            <img :src="item.filePath">
+         </div>
+          <div>
             내용 : {{info.contents}}
          </div>
+        <div>
+            내용(html태그적용) :  <div v-html="info.contents"></div>
+        </div> 
+         
          <div>
             <button @click="fnEdit">수정</button>
          </div>
@@ -49,7 +56,8 @@
             return {
                 // 변수 - (key : value)
                 boardNo : "${boardNo}",
-                info : {}
+                info : {},
+                fileList : []
             };
         },
         methods: {
@@ -66,7 +74,9 @@
                     type: "POST",
                     data: param,
                     success: function (data) {
+                        console.log(data);
                         self.info = data.info;
+                        self.fileList = data.fileList;
                     }
                 });
             },

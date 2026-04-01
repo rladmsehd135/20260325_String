@@ -41,12 +41,18 @@ public class UserService {
 		
 		try {
 			int cnt = userMapper.insertUser(map);
+			System.out.println("insert된 key값 : " + map.get("userId"));
 			if(cnt > 0) {
+				resultMap.put("userId", map.get("userId"));
 				resultMap.put("message", "회원가입 축하!");
+				resultMap.put("result", "success");
+				
 			} else {
 				resultMap.put("message", "회원가입 실패. 다시 시도해주셈.");
 			}
 			resultMap.put("result", "success");
+			
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
@@ -54,6 +60,20 @@ public class UserService {
 			resultMap.put("result", "fail");
 		}
 		
+		return resultMap;
+	}
+	public HashMap<String,Object> addUserFile(HashMap<String, Object> map){
+		HashMap<String,Object> resultMap = new HashMap<String,Object>();
+		try {
+			userMapper.insertUserFile(map);
+			resultMap.put("message", "등록되었습니다!");
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("message", "서버 에러");
+			resultMap.put("result", "fail");
+		}
 		return resultMap;
 	}
 	

@@ -39,6 +39,7 @@
          <div>
             담당교수 : {{info.profName}}
          </div>
+         <button @click="fnEdit">수정</button>
     </div>
 </body>
 </html>
@@ -69,6 +70,9 @@
                         self.info = data.info
                     }
                 });
+            },
+            fnEdit : function(){
+                pageChange("/stu/edit.do", {stuNo : this.stuNo})
             }
         }, // methods
         mounted() {

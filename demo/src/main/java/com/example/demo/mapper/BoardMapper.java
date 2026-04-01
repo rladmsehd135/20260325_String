@@ -9,8 +9,12 @@ import com.example.demo.model.Board;
 
 @Mapper
 public interface BoardMapper {
+	//첨부파일 목록
+	public List<Board> selectBoardFile(HashMap<String, Object> map);
 	public List<Board> selectBoardList(HashMap<String, Object> map);
 	public int insertBoard(HashMap<String, Object> map);
+	//파일삽입
+	public int insertBoardFile(HashMap<String, Object> map);
 	public Board selectBoard(HashMap<String, Object> map);
 	public int updateCnt(HashMap<String, Object> map);
 	public int updateBoard(HashMap<String, Object> map);
