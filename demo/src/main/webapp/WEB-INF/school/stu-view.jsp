@@ -27,35 +27,18 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-        <div>
-          <div>
-              검색어 : <input v-model="keyword">
-              <button @click="fnGetList">검색</button>
-          </div>
-          <table>
-                    <tr>
-                        <th>번호</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>내용</th>
-                        <th>조회수</th>
-                        <th>작성일</th>
-                        
-                    </tr>
-                     <tr v-for="item in list">
-                        <td>{{item.boardNo}}</td>
-                        <td>{{item.userId}}</td>
-                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a></td>
-                        <td>{{item.contents}}</td>
-                        <td>{{item.cnt}}</td>
-                        <td>{{item.cDateTime}}</td>
-
-                    </tr>
-        </table>
-     </div>  
          <div>
-            <a href="/board/add.do"><button>글쓰기</button></a>
-        </div> 
+            이름 : {{info.name}}
+         </div>
+         <div>
+            학번 : {{info.stuNo}}
+         </div>
+         <div>
+            학과 : {{info.dName3}}
+         </div>
+         <div>
+            담당교수 : {{info.profName}}
+         </div>
     </div>
 </body>
 </html>
@@ -65,37 +48,33 @@
         data() {
             return {
                 // 변수 - (key : value)
-                list : [],
-                keyword : ""
+                stuNo : "${map.stuNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnGetList: function () {
+            fnGetInfo: function () {
                 let self = this;
                 let param = {
-                    keyword : self.keyword
+                    stuNo : self.stuNo
                 };
                 $.ajax({
-                    url: "http://localhost:8080/board/list.dox",
+                    url: "http://localhost:8080/stu/info.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
                         console.log(data);
-                        self.list = data.list;
+                        self.info = data.info
                     }
                 });
-            },
-            fnView :function(boardNo){
-                // alert(boardNo);
-                pageChange("/board/view.do" ,{boardNo : boardNo})
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            self.fnGetList();
+            self.fnGetInfo();
         }
     });
 

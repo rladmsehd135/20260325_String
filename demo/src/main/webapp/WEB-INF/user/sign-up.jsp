@@ -26,25 +26,42 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <div>
-            <label >아이디<input v-model="userId"></label>
+        <div>
+            <label>아이디 : <input v-model="userId"></label>
             <button @click="fnCheck">중복체크</button>
-         </div>
-         <div>
-            <label >비밀번호<input v-model="pwd" type="password"></label>
-         </div>
-           <div>
-            <label >이름<input v-model="userName"></label>
-         </div>
-         <div>
+        </div> 
+        <div>
+            <label>비밀번호 : <input v-model="pwd" type="password"></label>
+        </div> 
+        <div>
+            <label>이름 : <input v-model="userName"></label>
+        </div> 
+        <div>
+            핸드폰인증 : 
+            <template v-if="!phoneFlg">
+                <input v-model="phoneNumber" placeholder="핸드폰번호 입력하셈">
+                <button @click="fnAuth">인증번호 발송</button>
+            </template>
+            <template v-else>
+                <template v-if="!ranFlg">
+                    <input v-model="phoneAuth" :placeholder="timer">
+                    <button @click="fnAuthCheck">인증번호확인</button>
+                </template>
+            </template>
+            
+            
+            
+            
+        </div>
+        <div>
             <label>주소 : 
                 <input v-model="addr">
                 <button @click="fnAddr()">주소검색</button>
             </label>
-         </div>
-         <div>
+        </div>
+        <div>
             <button @click="fnJoin">가입</button>
-         </div>
+        </div>
     </div>
 </body>
 </html>
@@ -53,24 +70,40 @@
     function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo){
         
         window.vueObj.addr = roadFullAddr;
-    }    
-
+    }
     const app = Vue.createApp({
         data() {
             return {
                 // 변수 - (key : value)
                 userId : "",
-                pwd : "",
                 userName : "",
-                addr : "" 
+                pwd : "",
+                addr : "",
+
+                phoneNumber : "",
+                ranStr : "", // 문자로 받은 랜덤 숫자
+                phoneAuth : "", // 내가 입력한 숫자
+                phoneFlg : false,
+                ranFlg : false, // 인증번호 정상 입력 시 true
+
+                count : 20,
+                timer : "",
+                intervalId : null
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnJoin: function () {
+            fnJoin : function () {
                 let self = this;
+                if(!self.ranFlg){
+                    alert("문자 인증 후 진행해주세요.");
+                    return;
+                }
+
                 let param = {
-                    userId : self.userId
+                    userId : self.userId,
+                    userName : self.userName,
+                    pwd : self.pwd
                 };
                 $.ajax({
                     url: "http://localhost:8080/join.dox",
@@ -82,7 +115,7 @@
                     }
                 });
             },
-             fnCheck: function () {
+            fnCheck : function () {
                 let self = this;
                 let param = {
                     userId : self.userId
@@ -99,6 +132,59 @@
             },
             fnAddr : function(){
                 window.open("/addr.do", "addr", "width=500, height=500");
+            },
+            fnAuth : function(){
+                let self = this;
+                let param = {
+                    phoneNumber : self.phoneNumber
+                };
+                $.ajax({
+                    url: "http://localhost:8080/send-one",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        if(data.res.groupInfo.status == "SENDING"){
+                            alert("문자가 전송되었습니다.");
+                            self.phoneFlg = true;
+                            self.ranStr = data.ranStr;
+                            self.intervalId = setInterval(self.fnTimer, 1000);
+                            setInterval(self.fnTimer, 1000);
+                        } else {
+                            alert("에러가 발생했습니다.");
+                        }
+                    }
+                });
+            },
+            fnTimer : function(){
+                let self = this;
+
+                if(self.count <= 0){
+                    clearInterval(self.intervalId);
+                    self.timer = "시간초과";
+                    alert("시간초과!");
+                    return;
+                }
+
+                let min = "";
+                let sec = "";
+                min = parseInt(self.count / 60);
+                sec = parseInt(self.count % 60);
+                
+                min = min < 10 ? "0" + min : min;
+                sec = sec < 10 ? "0" + sec : sec;
+
+                self.timer = min + ":" + sec
+                self.count--;
+            },
+            fnAuthCheck : function(){
+                let self = this;
+                if(self.ranStr == self.phoneAuth){
+                    alert("인증되었습니다!");
+                    self.ranFlg = true;
+                } else {
+                    alert("인증번호 다시 확인해주셈");
+                }
             }
         }, // methods
         mounted() {

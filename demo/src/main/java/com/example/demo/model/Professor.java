@@ -8,7 +8,7 @@ public class Professor {
 	String name;
 	String id;
 	String position;
-	String pay;
+	int pay;
 	String hireDate;
 	int bonus;
 	String deptNo;
@@ -16,6 +16,6 @@ public class Professor {
 	String hPage;
 	
 	String dName1; // 대학
-	String dName2; //학부
-	String dName3; //학과
+	String dName2; // 학부
+	String dName3; // 학과
 }

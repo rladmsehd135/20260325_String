@@ -6,27 +6,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DemoApplication;
 import com.example.demo.common.Message;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 
 @Service
 public class UserService {
-
-	private final DemoApplication demoApplication;
+	
 	@Autowired
 	UserMapper userMapper;
-
-	UserService(DemoApplication demoApplication) {
-		this.demoApplication = demoApplication;
-	}
-
-	public HashMap<String, Object> login(HashMap<String, Object> map) {
+	
+	public HashMap<String, Object> login(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
 		User user = userMapper.selectUser(map);
-		if (user != null) {
-			if (user.getPwd().equals(map.get("pwd"))) {
+		if(user != null) {
+//			ooo님 환영합니다!
+			if(user.getPwd().equals(map.get("pwd"))) {
 				resultMap.put("message", user.getUserName() + "님 환영합니다.");
 			} else {
 				resultMap.put("message", "비밀번호를 확인해주세요.");
@@ -35,52 +31,54 @@ public class UserService {
 			resultMap.put("message", "없는 아이디 입니다.");
 		}
 		resultMap.put("result", "success");
-
+		
+		
 		return resultMap;
 	}
-
-	public HashMap<String,Object> addUser(HashMap<String,Object> map){
-		HashMap<String,Object> resultMap = new HashMap<String,Object>();	
+	
+	public HashMap<String, Object> addUser(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
 			int cnt = userMapper.insertUser(map);
 			if(cnt > 0) {
 				resultMap.put("message", "회원가입 축하!");
-			}else {
-				resultMap.put("message", "회원가입 실패. 다시 시도해주세요");
+			} else {
+				resultMap.put("message", "회원가입 실패. 다시 시도해주셈.");
 			}
 			resultMap.put("result", "success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
-			resultMap.put("message", "서버 에러 발생! \n잠시 후 다시 시도해주세요");
+			resultMap.put("message", "서버 에러 발생! \n잠시 후 다시 시도해주세요.");
 			resultMap.put("result", "fail");
 		}
+		
 		return resultMap;
 	}
-	public HashMap<String, Object> checkUser(HashMap<String, Object> map) {
+	
+	public HashMap<String, Object> checkUser(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		try {
-
-			User user = userMapper.selectUser(map);
 		
-			if (user != null) {
-				resultMap.put("message", "이미 사용중인 아이디 입니다");
+		try {
+			User user = userMapper.selectUser(map);
+			if(user != null) {
+				resultMap.put("message", "이미 사용중인 아이디 입니다.");
 				resultMap.put("result", false);
 			} else {
-				resultMap.put("message", "없는 아이디 입니다.");
+				resultMap.put("message", "사용 가능한 아이디 입니다!");
 				resultMap.put("result", true);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
-			resultMap.put("result", "서버 에러.");
+			resultMap.put("message", "서버 에러.");
 		}
 		return resultMap;
 	}
 	
 	
-	//== 복습 ==
+	// == 복습 ==
 	public HashMap<String, Object> getUserList(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
@@ -88,7 +86,7 @@ public class UserService {
 			
 			resultMap.put("list", list);
 			resultMap.put("result", "success");
-			resultMap.put("message", Message.MSG_SEARCH);
+			resultMap.put("message", Message.MSG_ADD);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
@@ -98,13 +96,17 @@ public class UserService {
 		return resultMap;
 	}
 	
-	public HashMap<String,Object> removeUser(HashMap<String,Object> map){
-		HashMap<String,Object> resultMap = new HashMap<String,Object>();
-		userMapper.deleteUser(map);
-		try {	
-		 resultMap.put("message", Message.MSG_REMOVE);
+	public HashMap<String, Object> removeUser(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int result = userMapper.deleteUser(map);
+			
+			resultMap.put("result", "success");
+			resultMap.put("message", Message.MSG_REMOVE);
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e.getMessage());
+			resultMap.put("result", "fail");
 			resultMap.put("message", Message.MSG_SERVER_ERR);
 		}
 		return resultMap;

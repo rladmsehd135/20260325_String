@@ -26,14 +26,14 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <div>
+        <div>
             <label>아이디 : <input v-model="userId"></label>
-         </div>
-         <div>
+        </div> 
+        <div>
             <label>비밀번호 : <input v-model="pwd" type="password"></label>
-         </div>
-         <button @click="fnLogin">로그인</button>
-         <button @click="fnJoin">회원가입</button>
+        </div> 
+        <button @click="fnLogin">로그인</button>
+        <button>회원가입</button>
     </div>
 </body>
 </html>
@@ -49,13 +49,13 @@
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnLogin: function () {
+            fnLogin : function () {
                 let self = this;
                 let param = {
                     userId : self.userId,
                     pwd : self.pwd
-
                 };
+                
                 $.ajax({
                     url: "http://localhost:8080/login.dox",
                     dataType: "json",

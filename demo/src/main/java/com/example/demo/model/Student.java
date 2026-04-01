@@ -1,16 +1,14 @@
 package com.example.demo.model;
 
-
 public class Student {
-	// Student 테이블
+	// student 테이블
 	String stuNo;
 	String stuName;
 	String stuDept;
 	String stuGrade;
 	String stuGender;
 	
-	
-	//stu 테이블
+	// stu 테이블
 	
 	String name;
 	String id;
@@ -21,9 +19,14 @@ public class Student {
 	String deptNo1;
 	String deptNo2;
 	String profNo;
+	
 	String dName1; // 대학
-	String dName2; //학부
-	String dName3; //학과
-	String dName4; //부전공
-	String profName;
+	String dName2; // 학부
+	String dName3; // 학과
+	
+	String subDName1; // 부전공 대학
+	String subDName2; // 부전공 학부
+	String subDName3; // 부전공 학과
+	
+	String profName; // 담당 교수 이름
 }

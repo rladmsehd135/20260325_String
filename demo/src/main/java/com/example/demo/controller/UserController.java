@@ -17,59 +17,57 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
- 
+
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping("/login.do")
-	public String test(Model model) throws Exception{
+	@RequestMapping("/login.do") 
+	public String login(Model model) throws Exception{
 		return "/user/login";
 	}
-	@RequestMapping("/join.do")
+	
+	@RequestMapping("/join.do") 
 	public String join(Model model) throws Exception{
 		return "/user/sign-up";
 	}
-	@RequestMapping("/addr.do")
+	
+	@RequestMapping("/addr.do") 
 	public String addr(Model model) throws Exception{
 		return "/user/jusoPopup";
 	}
 	
 	@RequestMapping(value = "/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String remove(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println(map);
-//		DefaultService obj = new DefaultService();
-
 		resultMap = userService.login(map);
-//				
-		return new Gson().toJson(resultMap);
+		
+		return new Gson().toJson(resultMap); 
 	}
+	
 	@RequestMapping(value = "/join.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String join(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println(map);
-//		DefaultService obj = new DefaultService();
-
 		resultMap = userService.addUser(map);
-//				
-		return new Gson().toJson(resultMap);
+		
+		return new Gson().toJson(resultMap); 
 	}
+	
 	@RequestMapping(value = "/check.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String check(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println(map);
-//		DefaultService obj = new DefaultService();
-
 		resultMap = userService.checkUser(map);
-//				
-		return new Gson().toJson(resultMap);
+		
+		return new Gson().toJson(resultMap); 
 	}
 	
 	
-	//===복습(User 테이블)===
+	// === 복습(User 테이블) ===
 	@RequestMapping("/user/list.do") 
 	public String copy(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
 		return "/user/user-list";
@@ -77,22 +75,20 @@ public class UserController {
 	
 	@RequestMapping(value = "/user/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String userlist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String copy(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = userService.getUserList(map);
 
 		return new Gson().toJson(resultMap); 
 	}
-	@RequestMapping(value = "/user-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	
+	@RequestMapping(value = "/user/remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String removeUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String remove(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		System.out.println(map);
-//		DefaultService obj = new DefaultService();
-
 		resultMap = userService.removeUser(map);
-//				
-		return new Gson().toJson(resultMap);
-	}
 
+		return new Gson().toJson(resultMap); 
+	}
+	
 }
