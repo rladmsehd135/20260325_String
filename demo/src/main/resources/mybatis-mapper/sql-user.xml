@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.example.demo.mapper.UserMapper">
-		
-		<select id="selectUserList" parameterType="hashmap" resultType="com.example.demo.model.User">
-			SELECT *
-			FROM TBL_USER
-		</select>
-		
-		
-		<select id="selectUser" parameterType="hashmap" resultType="com.example.demo.model.User" >
-			SELECT *
-			FROM TBL_USER
-			WHERE USERID = #{userId}
-		</select>
-		
-		<insert id = "insertUser" parameterType="hashmap" >
-			INSERT INTO	TBL_USER(USERID,USERNAME,PWD) 
-			VALUES(#{userId},#{username},#{pwd})
-		</insert>
-		<insert id="insertUserFile" parameterType="hashmap" > 
+
+	<select id="selectUserList" parameterType="hashmap"
+		resultType="com.example.demo.model.User">
+		SELECT *
+		FROM TBL_USER
+	</select>
+
+
+	<select id="selectUser" parameterType="hashmap"
+		resultType="com.example.demo.model.User">
+		SELECT *
+		FROM TBL_USER
+		WHERE USERID = #{userId}
+	</select>
+
+	<insert id="insertUser" parameterType="hashmap"
+		useGeneratedKeys="true"
+		keyColumn="USERID"
+		keyProperty="userId">
+		INSERT INTO TBL_USER(USERID,USERNAME,PWD)
+		VALUES(#{userId},#{username},#{pwd})
+	</insert>
+	<insert id="insertUserFile" parameterType="hashmap">
 		INSERT INTO TBL_USER_FILE
-		VALUES(#{userId}, #{idx}, #{path}, #{filename}, #{orgName}, #{size}, #{ext})
-	
-		</insert>
-		<select id="selectUserFile" parameterType="hashmap" resultType="com.example.demo.model.User">
+		VALUES(#{userId}, #{idx}, #{path}, #{filename}, #{orgName}, #{size},
+		#{ext})
+
+	</insert>
+	<select id="selectUserFile" parameterType="hashmap"
+		resultType="com.example.demo.model.User">
 		SELECT *
 		FROM TBL_USER_FILE
 		WHERE USERID = #{userId}
-		</select>
-		
-		
-		<delete id ="deleteUser" parameterType="hashmap">
-			DELETE FROM TBL_USER WHERE USERID = #{userId} 
-		</delete>
-	
+	</select>
+
+
+	<delete id="deleteUser" parameterType="hashmap">
+		DELETE FROM TBL_USER WHERE USERID = #{userId}
+	</delete>
+
 </mapper>

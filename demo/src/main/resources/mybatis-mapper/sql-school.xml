@@ -40,6 +40,21 @@
 		<if test="deptNo != '' and deptNo != null">
 			AND S.DEPTNO1 = #{deptNo}
 		</if>
+		
+		<choose>
+			<when test="orderItem == 'dept'">
+				ORDER BY D1.DNAME
+			</when>
+			<when test="orderItem == 'name'">
+				ORDER BY NAME
+			</when>
+			<when test="orderItem == 'grade'">
+				ORDER BY GRADE
+			</when>
+			<otherwise>
+				ORDER BY GRADE
+			</otherwise>
+		</choose>
 	</select>
 	
 	<select id="selectDeptList" parameterType="hashmap" resultType="com.example.demo.model.Dept">
@@ -72,6 +87,25 @@
 		INNER JOIN DEPARTMENT D2 ON D1.PART = D2.DEPTNO
 		WHERE STUNO = #{stuNo}
 	</select>
+	
+	<delete id="deleteStu" parameterType="hashmap">
+		DELETE FROM STU
+		WHERE STUNO = #{stuNo}
+	</delete>
+	
+	<delete id="deleteAllStu" parameterType="hashmap">
+		DELETE FROM STU
+		WHERE STUNO IN 
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach> 
+	</delete>
+	
+	<delete id="deleteProf" parameterType="hashmap">
+		DELETE FROM PROFESSOR
+		WHERE PROFNO = #{profNo}
+	</delete>
+	
 	<select id="selectProf" parameterType="hashmap" resultType="com.example.demo.model.Professor">
 		SELECT 
 			P.*, 
@@ -83,15 +117,6 @@
 		WHERE PROFNO = #{profNo}
 	</select>
 	
-	<delete id="deleteStu" parameterType="hashmap">
-		DELETE FROM STU
-		WHERE STUNO = #{stuNo}
-	</delete>
-	
-	<delete id="deleteProf" parameterType="hashmap">
-		DELETE FROM PROFESSOR
-		WHERE PROFNO = #{profNo}
-	</delete>
 	<update id="updateStu" parameterType="hashmap">
 		UPDATE STU
 		SET
@@ -99,17 +124,7 @@
 			GRADE = #{grade},
 			DEPTNO1 = #{deptNo1},
 			PROFNO = #{profNo}
-		WHERE STUNO =#{stuNo}
-	</update>
-	
-	<update id="updateProf" parameterType="hashmap">
-		UPDATE PROFESSOR
-		SET
-			NAME = #{name},
-			POSITION = #{position},
-			DEPTNO = #{deptNo},
-			PAY = #{pay}
-		WHERE PROFNO =#{profNo}
+		WHERE STUNO = #{stuNo}
 	</update>
 </mapper>
 

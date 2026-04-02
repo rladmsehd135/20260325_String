@@ -131,7 +131,7 @@ public class UserController {
 				model.addAttribute("filename", multi.getOriginalFilename());
 				model.addAttribute("uploadPath", file.getAbsolutePath());
 				
-				return "redirect:list.do";
+				return "redirect:/user/join.do";
 			}
 		}catch(Exception e) {
 			System.out.println(e);
