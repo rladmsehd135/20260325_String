@@ -29,6 +29,10 @@ public class ProductController {
 	public String order(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
 		return "/product/order";
 	}
+	@RequestMapping("/product/payment.do") 
+	public String pay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		return "/product/payment";
+	}
 	
 	@RequestMapping(value = "/product/order.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody

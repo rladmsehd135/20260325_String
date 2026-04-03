@@ -22,7 +22,7 @@
 		keyColumn="USERID"
 		keyProperty="userId">
 		INSERT INTO TBL_USER(USERID,USERNAME,PWD)
-		VALUES(#{userId},#{username},#{pwd})
+		VALUES(#{userId},#{username},#{hashPwd})
 	</insert>
 	<insert id="insertUserFile" parameterType="hashmap">
 		INSERT INTO TBL_USER_FILE

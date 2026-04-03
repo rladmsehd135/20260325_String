@@ -70,10 +70,8 @@
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnJoin : function () {
+             fnJoin : function () {
                 let self = this;
-              
-
                 let param = {
                     userId : self.userId,
                     userName : self.userName,
@@ -85,10 +83,7 @@
                     type: "POST",
                     data: param,
                     success: function (data) {
-                       if (data.result == 'success') {
-                                self.fnFileAdd(data.userId);
-                                
-                            }
+                        alert(data.message);
                     }
                 });
             },
