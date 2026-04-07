@@ -28,14 +28,17 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
-            #index{
+
+            #index,
+            a {
                 text-decoration: none;
                 color: black;
-                padding : 3px;
-                margin : 3px;
+                padding: 3px;
+                margin: 3px;
 
             }
-            #index .active{
+
+            #index .active {
                 font-weight: bold;
                 color: blue;
 
@@ -46,13 +49,13 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-             <div>
-                <select v-model="pageSize" @click="fnGetList">
+            <div>
+                <select v-model="pageSize" @change="currentPage = 1; fnGetList()">
                     <option value="5">5개씩</option>
                     <option value="10">10개씩</option>
                     <option value="20">20개씩</option>
                 </select>
-             </div>
+            </div>
             <table>
                 <tr>
                     <th>사번</th>
@@ -63,24 +66,28 @@
                     <th>부서이름</th>
                 </tr>
                 <tr v-for="item in list">
-                        
-                        <td>{{item.empNo}}</td>
-                        <td>
-                          <a href="javascript:;" @click="fnView(item.empNo)">{{item.eName}}</a>  
-                        </td>
-                        <td>{{item.job}}</td>
-                        <td>{{item.mgrName}}</td>
-                        <td>{{item.grade}}</td>
-                        <td>{{item.dName}}</td>
-                    </tr>
-            </table>
-        
-           <a href="/emp/add.do"><button>사원추가</button></a>
 
-           <div>
+                    <td>{{item.empNo}}</td>
+                    <td>
+                        <a href="javascript:;" @click="fnView(item.empNo)">{{item.eName}}</a>
+                    </td>
+                    <td>{{item.job}}</td>
+                    <td>{{item.mgrName}}</td>
+                    <td>{{item.grade}}</td>
+                    <td>{{item.dName}}</td>
+                </tr>
+            </table>
+
+            <a href="/emp/add.do"><button>사원추가</button></a>
+
+            <div>
+
+                <a v-if="currentPage !=1" href="javascript:;" @click="currentPage -=1; fnGetList()" >◀</a>
+
                 <a @click="fnPage(num)" id="index" href="javascript:;" v-for="num in index">
-                   <span :class="{active : currentPage == num}"> {{num}} </span>
+                    <span :class="{active : currentPage == num}"> {{num}} </span>
                 </a>
+                <a v-if="currentPage != index" href="javascript:;" @click="currentPage +=1; fnGetList()">▶</a>
             </div>
         </div>
     </body>
@@ -92,10 +99,10 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    list : [],
-                    pageSize : 5,
-                    index : 1,
-                    currentPage : 1
+                    list: [],
+                    pageSize: 5, // 한페이지에 출력할 개수
+                    index: 1, // 최대 페이지 수
+                    currentPage: 1  // 현재 페이지
                 };
             },
             methods: {
@@ -103,8 +110,8 @@
                 fnGetList: function () {
                     let self = this;
                     let param = {
-                        pageSize : self.pageSize,
-                        offSet : self.pageSize * (self.currentPage - 1)
+                        pageSize: self.pageSize,
+                        offSet: self.pageSize * (self.currentPage - 1) //db에서 건너뛸 개수
                     };
                     $.ajax({
                         url: "http://localhost:8080/emp-list.dox",
@@ -112,17 +119,18 @@
                         type: "POST",
                         data: param,
                         success: function (data) {
-                             console.log(data);
+                            console.log(data);
                             self.list = data.list;
+                            //최대 페이지 수 구하는 식
                             self.index = Math.ceil(data.totalCount / self.pageSize);
                             console.log(self.index);
                         }
                     });
                 },
-                 fnView : function(empNo){
-                pageChange("/emp/view.do", {empNo : empNo});
+                fnView: function (empNo) {
+                    pageChange("/emp/view.do", { empNo: empNo });
                 },
-                fnPage : function(num){
+                fnPage: function (num) {
                     let self = this;
                     self.currentPage = num;
                     self.fnGetList();
